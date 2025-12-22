@@ -2,7 +2,7 @@
 
 # Fetch Paypal Monthly Statement
 Fetch paypal monthly statement using Paypal API and output PDF report (similar to paypal's own report).
-Its total disaster how bad the Paypal website is, you have to spend 10-30 minutes to get that report manually and earlier this year they even removed the automatic monthly statement, now you have to manually select the start and ending dates!!1
+Its total disaster how bad the Paypal website is, you have to spend 10-30 minutes to get that report manually and earlier this year they even removed the automatic monthly statement (you still had to request it in the list, but at least it was automatically set per month), now you have to manually select the start and ending dates!!1
 
 ### Setup
 - go to https://developer.paypal.com/api/rest/
