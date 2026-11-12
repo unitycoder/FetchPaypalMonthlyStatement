@@ -13,7 +13,8 @@ const { pipeline } = require('node:stream/promises');
 const PDFDocument = require('pdfkit');
 
 const REPORT_YEAR = Number(process.argv[2] || 2026);
-const REPORT_MONTH = Number(process.argv[3] || 8);
+const REPORT_MONTH = Number(process.argv[3] || 10);
+
 const BASE = 'https://api-m.paypal.com';
 const OUTPUT_ROOT = path.join(__dirname, 'reports');
 const STATUS = { S: 'Completed', P: 'Pending', D: 'Denied', V: 'Reversed' };
@@ -162,7 +163,9 @@ async function fetchTransactions(token, start, end)
 
         const data = await requestJson(url, { headers: { Authorization: `Bearer ${token}` } });
 
-        if (!Array.isArray(data.transaction_details)) throw new Error('Unexpected transaction response: transaction_details is missing.');
+        // PayPal omits transaction_details when the range has no transactions.
+        if (data.transaction_details === undefined && Number(data.total_items) === 0) data.transaction_details = [];
+        if (!Array.isArray(data.transaction_details)) throw new Error(`Unexpected transaction response: transaction_details is missing. Keys: ${Object.keys(data || {}).join(', ')}`);
 
         all.push(...data.transaction_details);
         console.log(`Fetched page ${page}: ${data.transaction_details.length} records.`);
